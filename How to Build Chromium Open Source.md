@@ -12,6 +12,16 @@
 [5. Run Chromium](#5.-Run-Chromium)  
 [#. Update your checkout](#.#-Update-your-checkout)  
 
+크로미움의 소스파일은 방대합니다. 이런 대규모 프로젝트에 참여한다면 소스코드를 다운받거나, checkout, code reivew를 관리하는 것이 힘이 들것이다. 이러한 이유때문에 chromium source code Repository와 interaction하는 것을 용이하게 해주는 depot_tools를 이용하는 것입니다.
+<br>
+[1](#1.-Install-depot_tools)  에서 depot_tools를 다운 받은 이후에 [2](#2.-Get-the-code)  에서 depot_tools에서 지원해주는 fetch도구를 이용해 chromium의 source code를 repository에서 다운받습니다. 
+<br>
+이제 다운 받은 소스코드를 빌드하여 실행파일로 만들어줘야합니다. 방대한 소스파일들을 빌드하기위해 빌드프로세스를 수동으로 호출하는 것이 실용적이지 않습니다. 무엇을 어떤 순서 빌드할지 또 어떤 의존성이 있는지 추적하기 쉽지 않기 때문입니다. 하지만 걱정할 필요가 없습니다. 우리는 앞서 depot_tools에 포함된 유틸리티 중 하나인 gn과 ninja 빌드도구를 사용하여 위의 복잡한 빌드과정을 자동으로 처리해줄 수 있습니다. ninja를 이용하여 빌드하기에 앞서 [3](#3.-Setting-up-the-build) 에서 gn으로 빌드할 폴더를 만들어주고 환경변수를 설정합니다.
+<br>
+빌드할 환경을 모두 세팅한 이후에는 [4](#4.-Build-Chromium)에서 ninja를 이용하여 크로미움을 빌드하고 빌드가 완료되면 [5](#5.-Run-Chromium)   참고하여 실행합니다.
+
+빌드 이후에 크로미움 오픈소스가 업데이트가 되었다면 rebase를 한 이후에 depot_tools에 포함된 유틸리티 중 하나인 gclient를 이용하여 적절하게 동기화하여 코드를 쉽게 업데이트 할 수 있습니다.
+<br>
 <hr>  
   
 ### 1. Install depot_tools  
