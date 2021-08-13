@@ -1,24 +1,102 @@
 # Chromium 빌드 방법
+
 크로미엄 공식문서에는 크로미엄을 다음과 같이 정의합니다.
 > Chromium is an open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web.
 
 우리가 잘 알고있는 구글 크롬은 이 크로미엄 코드를 사용하여 개발되었습니다. 이러한 크로미엄을 빌드하기 위한 과정을 알아보도록 하겠습니다.
 
-[1. Install depot_tools](#Install-depot_tools)
-[2. Get the code](#Get-the-code)
-[3. Setting up the build](#Setting-up-the-build)
-[4. Build Chromium](#Build-Chromium)
-[5. Run Chromium](#Run-Chromium)
-[#. Update your checkout](#Update-your-checkout)
+[1. Install depot_tools](#1.-Install-depot_tools)  
+[2. Get the code](#2.-Get-the-code)  
+[3. Setting up the build](#3.-Setting-up-the-build)  
+[4. Build Chromium](#4.-Build-Chromium)  
+[5. Run Chromium](#5.-Run-Chromium)  
+[#. Update your checkout](#.#-Update-your-checkout)  
 
-### Install depot_tools
-제일 먼저 [depot_tools](#depot_tools란?)을 clone합니다.
+<hr>  
+  
+### 1. Install depot_tools  
+
 ```console
 git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 ```
-depot_tool repository를 clone합니다.
+제일 먼저 [depot_tools](#depot_tools란?) repository를 clone합니다.
+<br><br>
+```console
+export PATH="$PATH:/path/to/depot_tools"
+```
+이제 [환경변수](#환경변수란?)를 설정해줍니다. 이로써 크로미움 오픈소스를 빌드할 빌드도구를 갖추게 되었습니다. 다음으로는 크롬의 소스코드를 다운받는 방법을 알아보겠습니다.
+<br><br>
+<hr>  
+  
+### 2. Get the code
 
-이제 환경변수를 설정해줄 것입니다. 환경변수란 운영체제가 참조하는 변수를 말합니다. 여기서 변수는 우리가 실제로 프로그래밍할때 선언하는 그 변수를 의미합니다. 많은 변수들 중 $PATH변수에 대해 알아보겠습니다. ~/Documents 안에 a.out 프로그램이 존재한다고 가정합니다. a.out를 실행하기위해서 다음 명령어를 입력합니다.
+```console
+git config --global core.precomposeUnicode true
+```  
+유니코드 파일 이름이 HFS에 의해 손상되지 않았는지 확인합니다.(파일 시스템이 파일 이름을 저장하는 방식이 다르기 때문에 발생할 수 있는 문제를 해결하는 방법으로 Mac과 다른 OS에서 저장소를 공유할 때 유용하게 사용되는 명령어라고 합니다.)
+<br><br>
+```console
+mkdir chromium && cd chromium
+```
+체크아웃을 위한 chromium 디렉토리를 만들고 이 디렉토리로 접근합니다.
+<br><br>
+```console
+fetch --nohooks chromium
+```
+depot_tools에 포함된 fetch 도구를 실행하여 chromium 소스코드를 다운받고 종속성을 확인합니다.
+
+```console
+cd src
+```  
+fetch가 완료되면 숨겨진 .gclient 파일과 work directory에 src 디렉토리가 생성됩니다. 이제부터 뒤에 이뤄질 과정은 src디렉토리에 접근했다는 것을 가정합니다.
+<br><br>
+<hr>
+  
+### 3. Setting up the build
+```console
+gn gen out/Default
+```
+gn을 이용하여 빌드를 위한 .ninja 파일을 생성합니다. 폴더 이름을 Default이외에 다른 것으로 바꿔도 되지만 out의 하위 디렉토리에 생성해야합니다.
+<br><br>
+
+다양한 build arguemnts를 설정할 수 있습니다. 이는 GN build configuration을 보며 필요한 arguements를 설정하시면 됩니다.
+```console
+gn gen out/Default
+```
+gn gen 명령어를 사용하여 vim으로 build arguments를 설정할 수 있습니다. 저는 "use_debug_fission=false", "is_clang=false"를 설정해주었습니다. 첫번째 argument는 링크시간을 희생시켜 GDB 로드 시간을 개선한다고 합니다.(물론 무슨 뜻인지 아직 이해가 가지 않습니다)
+<br><br>
+<hr>  
+  
+### 4. Build Chromium
+드디어 다운 받은 소스코드를 빌드할 때가 되었습니다.  
+```console
+autoninja -C out/Default chrome
+```
+ninja 대신 ninja에게 전달되는 인수에 대해 최적의 값을 자동으로 제공하는 wrapper인 autoninja를 이용하여 빌드를 진행합니다.
+
+<br><br>
+<hr>  
+  
+### 5. Run Chromium  
+빌드가 완료되면 chromium이 생성되었을 것입니다. chromium을 실행하는 명령어는 다음과 같습니다.
+```console
+out/Default/Chromium.app/Contents/MacOS/Chromium
+```
+<br><br>
+<hr>  
+  
+### #. Update your checkout
+기존의 checkout을 업데이트하기 위해서 다음 명령어를 사용하면 됩니다.
+```console
+$ git rebase-update
+$ gclient sync
+```
+첫번째 명령어는 chromium source를 업데이트하고 두번째 명령어는 종속성을 적절한 버전과 동기화하고 필요에 따라 후크를 다시 실행합니다.(후크가 뭔지는 잘 모르겠습니다.)
+<br><br>
+<hr>  
+
+#### 환경변수란?
+환경변수란 운영체제가 참조하는 변수를 말합니다. 여기서 변수는 우리가 실제로 프로그래밍할때 선언하는 그 변수를 의미합니다. 많은 변수들 중 $PATH변수에 대해 알아보겠습니다. ~/Documents 안에 a.out 프로그램이 존재한다고 가정합니다. a.out를 실행하기위해서 다음 명령어를 입력합니다.
 ```console
 ./a.out
 ``` 
@@ -33,66 +111,6 @@ export PATH="~/Documents"
 export PATH="$PATH:~/Documents"
 ```
 이렇게 되면 우리가 어떤 디렉토리에 있던지 a.out을 실행하면 우리가 있는 디렉토리에 a.out이 존재하지않으면 $PATH에 저장된 디렉토리를 확인하여 a.out을 찾을 것이고 이를 실행합니다.
-
-다시 돌아와서, depot_tools가 제공하는 유틸리티들을 어느 디렉토리에서든 사용할 수 있도록 환경변수를 설정해보겠습니다.(/path/to에서 git clone했다고 가정)
-```console
-export PATH="$PATH:/path/to/depot_tools"
-```
-
-
-### Get the code
-유니코드 파일 이름이 HFS에 의해 손상되지 않았는지 확인합니다.(파일 시스템이 파일 이름을 저장하는 방식이 다르기 때문에 발생할 수 있는 문제를 해결하는 방법으로 Mac과 다른 OS에서 저장소를 공유할 때 유용하게 사용되는 명령어라고 합니다.)
-```console
-git config --global core.precomposeUnicode true
-```
-
-체크아웃을 위한 chromium 디렉토리를 만들고 이 디렉토리로 접근합니다.
-```console
-mkdir chromium && cd chromium
-```
-
-depot_tools에 포함된 fetch 도구를 실행하여 chromium 소스코드를 다운받고 종속성을 확인합니다.
-```console
-fetch --nohooks chromium
-```
-fetch가 완료되면 숨겨진 .gclient 파일과 work directory에 src 디렉토리가 생성됩니다. 이제부터 뒤에 이뤄질 과정은 src디렉토리에 접근했다는 것을 가정합니다.
-```console
-cd src
-```  
-
-### Setting up the build
-gn을 이용하여 빌드를 위한 .ninja 파일을 생성합니다. 폴더 이름을 Default이외에 다른 것으로 바꿔도 되지만 out의 하위 디렉토리에 생성해야합니다.
-```console
-gn gen out/Default
-```
-다양한 build arguemnts를 설정할 수 있습니다. 이는 GN build configuration을 보며 필요한 arguements를 설정하시면 됩니다.
-
-gn gen 명령어를 사용하여 vim으로 build arguments를 설정할 수 있습니다. 저는 "use_debug_fission=false", "is_clang=false"를 설정해주었습니다. 첫번째 argument는 링크시간을 희생시켜 GDB 로드 시간을 개선한다고 합니다.
-
-```console
-gn gen out/Default
-```
-### Build Chromium
-드디어 다운 받은 소스코드를 빌드할 때가 되었습니다. ninja 대신 ninja에게 전달되는 인수에 대해 최적의 값을 자동으로 제공하는 wrapper인 autoninja를 이용하여 빌드를 진행합니다.
-```console
-autoninja -C out/Default chrome
-```
-
-### Run Chromium
-빌드가 완료되면 chromium이 생성되었을 것입니다. 이를 실행하는 명령어는 다음과 같습니다.
-```console
-out/Default/Chromium.app/Contents/MacOS/Chromium
-```
-
-### Update your checkout
-기존의 checkout을 업데이트하기 위해서 다음 명령어를 사용하면 됩니다.
-```console
-$ git rebase-update
-$ gclient sync
-```
-첫번째 명령어는 chromium source를 업데이트하고 
-두번째 명령어는 종속성을 적절한 버전과 동기화하고 필요에 따라 후크를 다시 실행합니다.
-
 
 #### depot_tools란?
 Chomium에서 사용하는 스크립트 패키지로 checkout, code reivew를 관리할 수 있습니다. 즉, Chromium source code Repository와 interaction을 가능하게 해줍니다. depot_tools에 포함된 유틸리티들(chromium 빌드 등에 필요한 도구들)은 다음과 같습니다.
@@ -112,6 +130,6 @@ Chomium에서 사용하는 스크립트 패키지로 checkout, code reivew를 �
 * python
 * repo
 
- #### 참고자료
+ #### 참고자료하면 좋은 자료
  Ninja에 대해 더 알고 싶을때: https://lethean.github.io/2016/03/17/about-ninja-build/
 gn: https://gn.googlesource.com/gn/
