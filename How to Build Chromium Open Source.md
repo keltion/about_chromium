@@ -141,6 +141,11 @@ Chomium에서 사용하는 스크립트 패키지로 checkout, code reivew를 �
 * python
 * repo
 
- #### 참고자료하면 좋은 자료
- Ninja에 대해 더 알고 싶을때: https://lethean.github.io/2016/03/17/about-ninja-build/
-gn: https://gn.googlesource.com/gn/
+<hr>  
+  
+#### 참고자료하면 좋은 자료
+Ninja에 대해 더 알고 싶을때: https://lethean.github.io/2016/03/17/about-ninja-build/  
+<br>
+#### 참고자료
+빌드도구란? https://wangmin.tistory.com/50  
+The Chromium Projects : https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/mac_build_instructions.md#install
