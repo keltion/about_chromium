@@ -48,7 +48,7 @@ depot_tools에 포함된 fetch 도구를 실행하여 chromium 소스코드를 �
 ```console
 cd src
 ```  
-fetch가 완료되면 숨겨진 .gclient 파일과 work directory에 src 디렉토리가 생성됩니다. 이제부터 뒤에 이뤄질 과정은 src디렉토리에 접근했다는 것을 가정합니다.
+fetch가 완료되면 숨겨진 .gclient 파일과 work directory에 src 디렉토리가 생성됩니다. 이제부터 뒤에 이뤄질 과정은 src디렉토리에 접근했다는 것을 가정합니다. 이제 소스코드를 다운 받았으니 빌드도구로 이를 빌드할 일만 남았습니다. 
 <br><br>
 <hr>
   
