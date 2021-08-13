@@ -5,40 +5,40 @@
 
 우리가 잘 알고있는 구글 크롬은 이 크로미엄 코드를 사용하여 개발되었습니다. 이러한 크로미엄을 빌드하기 위한 과정을 알아보도록 하겠습니다.
 
-[1. Install depot_tools](#1.-Install-depot_tools)  
-[2. Get the code](#2.-Get-the-code)  
-[3. Setting up the build](#3.-Setting-up-the-build)  
-[4. Build Chromium](#4.-Build-Chromium)  
-[5. Run Chromium](#5.-Run-Chromium)  
-[#. Update your checkout](#.#-Update-your-checkout)  
+[1. Install depot_tools](#Install-depot_tools)  
+[2. Get the code](#Get-the-code)  
+[3. Setting up the build](#Setting-up-the-build)  
+[4. Build Chromium](#Build-Chromium)  
+[5. Run Chromium](#Run-Chromium)  
+[#. Update your checkout](#Update-your-checkout)  
 
 크로미움의 소스파일은 방대합니다. 이런 대규모 프로젝트에 참여한다면 소스코드를 다운받거나, checkout, code reivew를 관리하는 것이 힘이 들것다. 이러한 이유때문에 chromium source code Repository와 interaction하는 것을 용이하게 해주는 depot_tools를 이용하는 것입니다.
 <br><br>
-[1](#1.-Install-depot_tools)  에서 depot_tools를 다운 받은 이후에 [2](#2.-Get-the-code)  에서 depot_tools에서 지원해주는 fetch도구를 이용해 chromium의 source code를 repository에서 다운받습니다. 
+[1](#Install-depot_tools)  에서 depot_tools를 다운 받은 이후에 [2](#Get-the-code)에서 depot_tools에서 지원해주는 fetch도구를 이용해 chromium의 source code를 repository에서 다운받습니다. 
 <br><br>
-이제 다운 받은 소스코드를 빌드하여 실행파일로 만들어줘야합니다. 방대한 소스파일들을 빌드하기위해 빌드프로세스를 수동으로 호출하는 것이 실용적이지 않습니다. 무엇을 어떤 순서 빌드할지 또 어떤 의존성이 있는지 추적하기 쉽지 않기 때문입니다. 하지만 걱정할 필요가 없습니다. 우리는 앞서 depot_tools에 포함된 유틸리티 중 하나인 gn과 ninja 빌드도구를 사용하여 위의 복잡한 빌드과정을 자동으로 처리해줄 수 있습니다. ninja를 이용하여 빌드하기에 앞서 [3](#3.-Setting-up-the-build) 에서 gn으로 빌드할 폴더를 만들어주고 환경변수를 설정합니다.
+이제 다운 받은 소스코드를 빌드하여 실행파일로 만들어줘야합니다. 방대한 소스파일들을 빌드하기위해 빌드프로세스를 수동으로 호출하는 것이 실용적이지 않습니다. 무엇을 어떤 순서 빌드할지 또 어떤 의존성이 있는지 추적하기 쉽지 않기 때문입니다. 하지만 걱정할 필요가 없습니다. 우리는 앞서 depot_tools에 포함된 유틸리티 중 하나인 gn과 ninja 빌드도구를 사용하여 위의 복잡한 빌드과정을 자동으로 처리해줄 수 있습니다. ninja를 이용하여 빌드하기에 앞서 [3](#Setting-up-the-build) 에서 gn으로 빌드할 폴더를 만들어주고 환경변수를 설정합니다.
 <br><br>
-빌드할 환경을 모두 세팅한 이후에는 [4](#4.-Build-Chromium)에서 ninja를 이용하여 크로미움을 빌드하고 빌드가 완료되면 [5](#5.-Run-Chromium)   참고하여 실행합니다.
+빌드할 환경을 모두 세팅한 이후에는 [4](#Build-Chromium)에서 ninja를 이용하여 크로미움을 빌드하고 빌드가 완료되면 [5](#Run-Chromium)를 참고하여 실행합니다.
 
 빌드 이후에 크로미움 오픈소스가 업데이트가 되었다면 rebase를 한 이후에 depot_tools에 포함된 유틸리티 중 하나인 gclient를 이용하여 적절하게 동기화하여 코드를 쉽게 업데이트 할 수 있습니다.
 <br>
 <hr>  
   
-### 1. Install depot_tools  
+### Install depot_tools  
 
 ```console
 git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 ```
-제일 먼저 [depot_tools](#depot_tools란?) repository를 clone합니다.
+제일 먼저 [depot_tools](#depot_tools) repository를 clone합니다.
 <br><br>
 ```console
 export PATH="$PATH:/path/to/depot_tools"
 ```
-이제 [환경변수](#환경변수란?)를 설정해줍니다. 이로써 크로미움 오픈소스를 빌드할 빌드도구를 갖추게 되었습니다. 다음으로는 크롬의 소스코드를 다운받는 방법을 알아보겠습니다.
+이제 [환경변수](#environment-variable)를 설정해줍니다. 이로써 크로미움 오픈소스를 빌드할 빌드도구를 갖추게 되었습니다. 다음으로는 크롬의 소스코드를 다운받는 방법을 알아보겠습니다.
 <br><br>
 <hr>  
   
-### 2. Get the code
+### Get the code
 
 ```console
 git config --global core.precomposeUnicode true
@@ -62,7 +62,7 @@ fetch가 완료되면 숨겨진 .gclient 파일과 work directory에 src 디렉�
 <br><br>
 <hr>
   
-### 3. Setting up the build
+### Setting up the build
 ```console
 gn gen out/Default
 ```
@@ -77,7 +77,7 @@ gn gen 명령어를 사용하여 vim으로 build arguments를 설정할 수 있�
 <br><br>
 <hr>  
   
-### 4. Build Chromium
+### Build Chromium
 드디어 다운 받은 소스코드를 빌드할 때가 되었습니다.  
 ```console
 autoninja -C out/Default chrome
@@ -87,7 +87,7 @@ ninja 대신 ninja에게 전달되는 인수에 대해 최적의 값을 자동�
 <br><br>
 <hr>  
   
-### 5. Run Chromium  
+### Run Chromium  
 빌드가 완료되면 chromium이 생성되었을 것입니다. chromium을 실행하는 명령어는 다음과 같습니다.
 ```console
 out/Default/Chromium.app/Contents/MacOS/Chromium
@@ -95,7 +95,7 @@ out/Default/Chromium.app/Contents/MacOS/Chromium
 <br><br>
 <hr>  
   
-### #. Update your checkout
+### Update your checkout
 기존의 checkout을 업데이트하기 위해서 다음 명령어를 사용하면 됩니다.
 ```console
 $ git rebase-update
@@ -105,7 +105,7 @@ $ gclient sync
 <br><br>
 <hr>  
 
-#### 환경변수란?
+#### environment variable
 환경변수란 운영체제가 참조하는 변수를 말합니다. 여기서 변수는 우리가 실제로 프로그래밍할때 선언하는 그 변수를 의미합니다. 많은 변수들 중 $PATH변수에 대해 알아보겠습니다. ~/Documents 안에 a.out 프로그램이 존재한다고 가정합니다. a.out를 실행하기위해서 다음 명령어를 입력합니다.
 ```console
 ./a.out
@@ -123,7 +123,7 @@ export PATH="$PATH:~/Documents"
 이렇게 되면 우리가 어떤 디렉토리에 있던지 a.out을 실행하면 우리가 있는 디렉토리에 a.out이 존재하지않으면 $PATH에 저장된 디렉토리를 확인하여 a.out을 찾을 것이고 이를 실행합니다.
 <hr>  
   
-#### depot_tools란?
+#### depot_tools
 Chomium에서 사용하는 스크립트 패키지로 checkout, code reivew를 관리할 수 있습니다. 즉, Chromium source code Repository와 interaction을 가능하게 해줍니다. depot_tools에 포함된 유틸리티들(chromium 빌드 등에 필요한 도구들)은 다음과 같습니다.
 
 * gclient
