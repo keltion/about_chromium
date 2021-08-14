@@ -3,7 +3,7 @@
 크로미엄 공식문서에는 크로미엄을 다음과 같이 정의합니다.
 > Chromium is an open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web.
 
-우리가 잘 알고있는 구글 크롬은 이 크로미엄 코드를 사용하여 개발되었습니다. 이러한 크로미엄을 빌드하기 위한 과정을 알아보도록 하겠습니다.
+우리가 잘 알고있는 구글 크롬은 이 크로미엄 코드를 사용하여 개발되었습니다. mac을 기준으로 이러한 크로미엄을 빌드하기 위한 과정을 알아보도록 하겠습니다.
 
 [1. Install depot_tools](#Install-depot_tools)  
 [2. Get the code](#Get-the-code)  
