@@ -12,7 +12,7 @@
 [5. Run Chromium](#Run-Chromium)  
 [#. Update your checkout](#Update-your-checkout)  
 
-크로미움의 소스파일은 방대합니다. 이런 대규모 프로젝트에 참여한다면 소스코드를 다운받거나, checkout, code reivew를 관리하는 것이 힘이 들것다. 이러한 이유때문에 chromium source code Repository와 interaction하는 것을 용이하게 해주는 depot_tools를 이용하는 것입니다.
+크로미움의 소스파일은 방대합니다. 이런 대규모 프로젝트에 참여한다면 소스코드를 다운받거나, checkout, code reivew를 관리하는 것이 힘이 들 것입니다. 이러한 이유때문에 chromium source code Repository와 interaction하는 것을 용이하게 해주는 depot_tools를 이용하는 것입니다.
 <br><br>
 [1](#Install-depot_tools)  에서 depot_tools를 다운 받은 이후에 [2](#Get-the-code)에서 depot_tools에서 지원해주는 fetch도구를 이용해 chromium의 source code를 repository에서 다운받습니다. 
 <br><br>
