@@ -71,9 +71,9 @@ gn을 이용하여 빌드를 위한 .ninja 파일을 생성합니다. 폴더 이
 
 다양한 build arguemnts를 설정할 수 있습니다. 이는 GN build configuration을 보며 필요한 arguements를 설정하시면 됩니다.
 ```console
-gn gen out/Default
+gn args out/Default
 ```
-gn gen 명령어를 사용하여 vim으로 build arguments를 설정할 수 있습니다. 저는 "use_debug_fission=false", "is_clang=false"를 설정해주었습니다. 첫번째 argument는 링크시간을 희생시켜 GDB 로드 시간을 개선한다고 합니다.(물론 무슨 뜻인지 아직 이해가 가지 않습니다)
+gn agrs 명령어를 사용하여 vim으로 build arguments를 설정할 수 있습니다. 저는 "use_debug_fission=false", "is_clang=false"를 설정해주었습니다. 첫번째 argument는 링크시간을 희생시켜 GDB 로드 시간을 개선한다고 합니다.(물론 무슨 뜻인지 아직 이해가 가지 않습니다)
 <br><br>
 <hr>  
   
